@@ -106,7 +106,7 @@ const getFontRange = async (blob: Blob) => {
     .filter((g: any) => g.unicode)
     // .map((v: any) => v.name)
     .sort((a: any, b: any) => a.unicode - b.unicode);
-  console.log("Font Range slice(0, 50)", m.slice(0, 50));
+  // console.log("Font Range slice(0, 50)", m.slice(0, 50));
   return m;
 };
 

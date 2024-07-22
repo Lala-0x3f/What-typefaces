@@ -69,7 +69,7 @@ const FontPage = ({ params }: { params: { name: string } }) => {
       });
       // computeOutlineFormat(blobs[0]);
       getFontTable(blobs[0]).then((r) => {
-        console.log(fontName, r);
+        // console.log(fontName, r);
         q_ASM(r);
         setFontTable(r.name as any as FontNameTable);
       });

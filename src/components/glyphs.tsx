@@ -46,7 +46,7 @@ const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
   if(em<t.os2.sCapHeight){
     em = t.os2.usWinAscent
   }
-  console.log(em,m)
+  // console.log(em,m)
 
   return (
     <div className="grid md:grid-cols-2" style={{ fontFamily: fontName }}>
