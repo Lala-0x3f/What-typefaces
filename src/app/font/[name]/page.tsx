@@ -54,7 +54,7 @@ const FontPage = ({ params }: { params: { name: string } }) => {
     resetPreviewText();
     FontInfo(fontName).then((q) => {
       const p = q;
-      p.styles = sortFontsByStyle(q.styles);
+      p.styles = sortFontsByStyle(q.styles as any);
       // console.log(p);
       initFont(p);
       BlobList(p.styles.map((f) => f.postscriptName)).then((b) => {
