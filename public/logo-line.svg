@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101.9528 98.4719">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #231815;
+        stroke-width: 5px;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <circle class="cls-1" cx="50.9764" cy="45.1512" r="44.6512" />
+    <ellipse class="cls-1" cx="50.9764" cy="56.9837" rx="34.8957" ry="32.8186" />
+    <path class="cls-1"
+      d="m.5002,86.7969v11.175s100.9527,0,100.9527,0v-11.175s0,0,0,0c-16.4255,2.3868-33.287,3.6282-50.4763,3.6282-17.1894,0-34.051-1.2413-50.4765-3.6282h.0001Z M" />
+  </g>
+</svg>
