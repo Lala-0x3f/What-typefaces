@@ -1,5 +1,5 @@
 interface Font {
-  family?: string;
+  family: string;
   fullName: string;
   postscriptName: string;
   style: string;
@@ -46,7 +46,7 @@ const groupFontsByFamily = (fonts: Font[]): FontFamily[] => {
 const getFonts = async (input?: string): Promise<Font[]> => {
   try {
     if ("queryLocalFonts" in window) {
-      const availableFonts = await window.queryLocalFonts(
+      const availableFonts = await (window as any).queryLocalFonts(
         input ? { postscriptNames: [input] } : null
       );
       return availableFonts;
@@ -72,7 +72,7 @@ const FontInfo = async (name: string): Promise<FontFamily> => {
 
 const BlobList = async (postscriptNames: string[]): Promise<Blob[]> => {
   const l: Blob[] = []; 
-  const fonts = await window.queryLocalFonts({
+  const fonts = await (window as any).queryLocalFonts({
     postscriptNames: postscriptNames,
   });
   for (const f of fonts) {
