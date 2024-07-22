@@ -25,19 +25,19 @@ const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
   // const m = glyphs.find((v) =>
   //   ["U+006D", "m", "uni006D", "0x6D", "u006D"].includes(v.name || "")
   // );
-  const m = glyphs.find((v) => (v.unicode = "M".charCodeAt(0)));
+  const m = glyphs.find((v) => (v.unicode === "M".charCodeAt(0)));
   const len = glyphs.length
 
   glyphs = glyphs.slice(0, 1200);
   // console.log("t.os2.usWinAscent",m, t.os2.usWinAscent);
   let em: number;
 
-  if (m.advanceWidth >= 1500) {
+  if (m&&m.advanceWidth >= 1500) {
     em = t.hhea.ascender;
     // em = t.os2.usWinAscent + t.os2.usWinDescent
-  } else if (m.advanceWidth >= 1000) {
+  } else if (m&&m.advanceWidth >= 1000) {
     em = 2048;
-  } else if (m.advanceWidth >= 500) {
+  } else if (m&&m.advanceWidth >= 500) {
     em = 1024;
   } else {
     em = 256;
