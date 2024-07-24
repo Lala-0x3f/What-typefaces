@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main className="w-full h-full text-white bg-black flex px-16 relative flex-col-reverse">
       <div className="absolute flex h-full items-center">
-        <div className=" text-[7rem] leading-none">
+        <div className="text-4xl md:text-6xl lg:text-[7rem] leading-none">
           <h2 className="font-extralight">你说得对</h2>
           <h1 className="font-black">但是</h1>
           <h2 className="font-extralight">这个网站可以</h2>
@@ -28,7 +28,7 @@ export default function Home() {
       </div>
       <div className="w-full">
         <div className="bottom-0 flex w-full items-center justify-between my-14">
-          <span className="text-3xl">See what fonts you have</span>
+          <span className="text-3xl">What fonts you have</span>
           <Link href="/font">
             <Button>
               <ArrowRightIcon className="size-[3rem] left-0 hover:left-0.5 relative transition-all" />
