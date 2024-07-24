@@ -20,9 +20,18 @@ interface TypeTestProps {
 
 const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
   const [textSize, setSize] = useState(70);
+  const [content, setContent] = useState(
+    "Lorem ipsum dolor sit amet consectetur."
+  );
   const [textWeight, setWeight] = useState(400);
   const [textColor, setTextColor] = useState("#000000");
   const [textAlign, setTextAlign] = useState("center");
+  const M = (ta: string, co: string, si: number) => {
+    setTextAlign(ta);
+    setContent(co);
+    setSize(si);
+  };
+
   if (font) {
     return (
       <div>
@@ -35,7 +44,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
           <div>
             <p>Size {textSize}</p>
             <Slider
-              defaultValue={[textSize]}
+              value={[textSize]}
               max={150}
               min={5}
               step={1}
@@ -47,7 +56,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
           <div>
             <p>Weight {textWeight}</p>
             <Slider
-              defaultValue={[textWeight]}
+              value={[textWeight]}
               max={900}
               min={100}
               onValueChange={(e) => {
@@ -55,7 +64,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
               }}
             />
           </div>
-          <div className="flex justify-between *:flex *:items-center *:gap-2">
+          <div className="flex justify-between *:flex *:items-center *:gap-2 col-span-2">
             <div>
               <p>Align</p>
               <ToggleGroup
@@ -82,6 +91,56 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
               </ToggleGroup>
             </div>
             <div>
+              <p>Example</p>
+              <ToggleGroup
+                variant="outline"
+                type="single"
+                defaultValue="center"
+                className="justify-self-end"
+                size={"sm"}
+                onValueChange={(v) => {
+                  setContent(v);
+                  switch (v) {
+                    case "lorem":
+                      M(
+                        "center",
+                        "Lorem ipsum dolor sit amet consectetur.",
+                        70
+                      );
+                      break;
+                    case "code":
+                      M(
+                        "left",
+                        `
+const Fishing = (fishes) => {
+    return ( 
+        <>
+            <Boat>
+                uwu
+            </Boat>
+            <River>
+                {fishes.map((fish,i)=>{
+                    return <Fish species={fish.name} key={i} />
+                })}
+            </River>
+        </>
+     );
+}`,
+                        15
+                      );
+                      break;
+                    case "number":
+                      M("center", "0123456789+-×÷", 100);
+                      break;
+                  }
+                }}
+              >
+                <ToggleGroupItem value="lorem">Lorem</ToggleGroupItem>
+                <ToggleGroupItem value="code">Code</ToggleGroupItem>
+                <ToggleGroupItem value="number">Number</ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+            <div>
               <p>Color</p>
               <div
                 className="size-6 rounded-full p-0 border-2"
@@ -89,7 +148,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
               >
                 <input
                   type="color"
-                  className="size-6 p-0 m-0 border-0 absolute opacity-0"
+                  className="h-6 w-28 cursor-pointer p-0 m-0 border-0 absolute opacity-0"
                   onChange={(e) => {
                     setTextColor(e.target.value);
                   }}
@@ -101,7 +160,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
         </div>
         <p
           contentEditable
-          className="w-full p-8 text-center focus-visible:outline-0 h-fit underline decoration-dashed	decoration-stone-400 decoration-1	  whitespace-break-spaces text-pretty"
+          className="max-w-full m-8 text-center focus-visible:outline-0 h-fit underline decoration-dashed	decoration-stone-400 decoration-1	  whitespace-break-spaces text-pretty"
           style={{
             fontSize: textSize,
             fontWeight: textWeight,
@@ -110,7 +169,7 @@ const TypeTest: React.FC<TypeTestProps> = ({ t, fontName, color, font }) => {
             textAlign: textAlign as any,
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          {content}
         </p>
       </div>
     );

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Table } from "opentype.js";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { Switch } from "./ui/switch";
 
 const u = (codePoint: number) => {
   return String.fromCodePoint(codePoint);
@@ -17,46 +18,54 @@ interface GlyphsProps {
 
 const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
   const [inspectorGlyph, setInspectorGlyph] = useState("x");
+  const [stroke, setIsStroke] = useState(false);
 
-  // const ex: number = t.os2.sxHeight;
-  // const em: number = (t.os2.usWinAscent + t.os2.usWinDescent)*(t.os2.sxHeight/t.os2.sCapHeight)
-  // const em: number = t.hhea.ascender
-  // const em: number = t.os2.sCapHeight - t.os2.sTypoDescender;
-  // const m = glyphs.find((v) =>
-  //   ["U+006D", "m", "uni006D", "0x6D", "u006D"].includes(v.name || "")
-  // );
-  const m = glyphs.find((v) => (v.unicode === "M".charCodeAt(0)));
-  const len = glyphs.length
+  const m = glyphs.find((v) => v.unicode === "M".charCodeAt(0));
+  const len = glyphs.length;
 
   glyphs = glyphs.slice(0, 1200);
-  // console.log("t.os2.usWinAscent",m, t.os2.usWinAscent);
+  // console.log("t.hhea", t.hhea);
   let em: number;
 
-  if (m&&m.advanceWidth >= 1500) {
-    em = t.hhea.ascender;
+  if (m && m.advanceWidth >= 1500) {
+    em = t.hhea.ascender + 50;
+    // em = 2048;
     // em = t.os2.usWinAscent + t.os2.usWinDescent
-  } else if (m&&m.advanceWidth >= 1000) {
+  } else if (m && m.advanceWidth >= 1000) {
     em = 2048;
-  } else if (m&&m.advanceWidth >= 500) {
+  } else if (m && m.advanceWidth >= 500) {
     em = 1024;
   } else {
     em = 256;
   }
-
-  if(em<t.os2.sCapHeight){
-    em = t.os2.usWinAscent
-  }
+  // em = t.os2.usWinAscent;
+  // if(em<t.os2.sCapHeight){
+  //   em = t.os2.usWinAscent
+  // }
   // console.log(em,m)
 
   return (
-    <div className="grid md:grid-cols-2" style={{ fontFamily: fontName }}>
+    <div className="grid md:grid-cols-2 py-4" style={{ fontFamily: fontName }}>
       <div className="h-full w-full hidden md:block">
         <div
           className="sticky top-[10rem] text-[37vh] rounded-3xl shadow overflow-hidden mr-4 z-0 flex items-center justify-center h-[70vh] text-center"
           style={{ backgroundColor: color }}
         >
-          <span className="leading-none w-full absolute z-10">
+          <span
+            className="leading-none w-full absolute z-10 select-none"
+            style={
+              stroke
+                ? {
+                    WebkitTextStroke: "1pt black",
+                    color: "transparent",
+                  }
+                : {
+                    // 暂无
+                  }
+            }
+          >
             {inspectorGlyph}
+            {/* <span className="w-1 h-[1em] bg-black">1</span> */}
           </span>
 
           <div
@@ -69,27 +78,33 @@ const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
             <div>
               <div className="inline-block bg-pink-50 z-0">
                 <div className="absolute *:border-t *:border-dashed *:border-white *:absolute *:text-left *:leading-none *:*:font-mono *:w-full w-full">
-                  <div className="text-xs">BASELINE</div>
+                  <div className="text-xs absolute">BASELINE</div>
                   {t.os2.sTypoDescender ? (
                     <div style={{ top: `${-t.os2.sTypoDescender / em}em` }}>
-                      <p className="text-xs">
+                      <p className="text-xs absolute">
                         DESCENDER {t.os2.sTypoDescender}
                       </p>
                     </div>
                   ) : null}
                   {t.os2.usWinAscent && (
                     <div style={{ top: `${-t.os2.usWinAscent / em}em` }}>
-                      <p className="text-xs">ASCENT {t.os2.usWinAscent}</p>
+                      <p className="text-xs absolute">
+                        ASCENT {t.os2.usWinAscent}
+                      </p>
                     </div>
                   )}
                   {t.os2.sxHeight && (
                     <div style={{ top: `${-t.os2.sxHeight / em}em` }}>
-                      <p className="text-xs">X Height {t.os2.sxHeight}</p>
+                      <p className="text-xs absolute">
+                        X Height {t.os2.sxHeight}
+                      </p>
                     </div>
                   )}
                   {t.os2.sCapHeight && (
                     <div style={{ top: `${-t.os2.sCapHeight / em}em` }}>
-                      <p className="text-xs">Cap Height {t.os2.sCapHeight}</p>
+                      <p className="text-xs absolute">
+                        Cap Height {t.os2.sCapHeight}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -98,14 +113,31 @@ const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
                 <div className="inline-block bg-pink-50 w-0 h-[1ex]">
                   <div className="absolute *:border-t *:border-dashed *:border-white *:absolute *:text-left *:leading-none *:*:font-mono *:w-full w-full">
                     <div style={{ top: `0ex` }}>
-                      <p className="text-xs">X Height (System guess)</p>
+                      <p className="text-xs absolute">
+                        X Height (System guess)
+                      </p>
                     </div>
                   </div>
                 </div>
               ) : null}
             </div>
           </div>
-          <div className="absolute text-base bottom-2 w-[90%] font-mono text-white flex gap-6 flex-nowrap overflow-x-clip *:text-nowrap  justify-between">
+          <div className="absolute text-base top-4 w-[90%] font-mono text-white flex gap-2 flex-nowrap overflow-x-clip *:text-nowrap  justify-start items-center">
+            <p className={(stroke as any) || "underline decoration-1	"}>
+              Solid
+            </p>
+            <Switch
+              id="display-mode"
+              className="scale-50"
+              onCheckedChange={(e) => {
+                setIsStroke(e);
+              }}
+            />
+            <p className={(stroke as any) && "underline decoration-1	"}>
+              Stroke
+            </p>
+          </div>
+          <div className="absolute text-base bottom-4 w-[90%] font-mono text-white flex gap-6 flex-nowrap overflow-x-clip *:text-nowrap  justify-between">
             <p>
               Unicode:U+
               {inspectorGlyph.charCodeAt(0).toString(16).toUpperCase()}
@@ -142,17 +174,19 @@ const Glyphs: React.FC<GlyphsProps> = ({ glyphs, fontName, color, t }) => {
                 }
               }}
             >
-              <p className="duration-700 row-span-3 group-hover:scale-[200%] md:group-hover:scale-100 transition-all ">{u(g.unicode)}</p>
+              <p className="duration-700 row-span-3 group-hover:scale-[200%] md:group-hover:scale-100 transition-all ">
+                {u(g.unicode)}
+              </p>
               <p className="md:text-[0.1rem] opacity-0 group-hover:opacity-100 text-[0.5rem] group-hover:pt-2 md:group-hover:pt-0 font-mono md:group-hover:text-[0.4rem] font-bold">
                 {g.unicode}
               </p>
             </div>
           );
         })}
-      <div className="col-start-1 col-span-full p-2 font-mono">
-        Total {len} characters
-        {(len>=1200)?<>, Maximum preview of 1200 characters</>:null}
-      </div>
+        <div className="col-start-1 col-span-full p-2 font-mono">
+          Total {len} characters
+          {len >= 1200 ? <>, Maximum preview of 1200 characters</> : null}
+        </div>
       </div>
     </div>
   );
