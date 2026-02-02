@@ -3,7 +3,7 @@ import React from "react";
 import * as crypto from "crypto";
 import { cn } from "@/lib/utils";
 import FavouriteButton from "./favourite";
-import DownloadButton from "./download";
+import CopyFontNameButton from "./copy-font-name";
 import { FontFamily } from "@/lib/fonts";
 import Link from "next/link";
 
@@ -78,7 +78,7 @@ const FontCard: React.FC<FontCardProp> = ({
         </Link>
         <div className="flex gap-2">
           <FavouriteButton />
-          <DownloadButton />
+          <CopyFontNameButton fontName={name} />
         </div>
       </div>
       <div className="flex flex-1 items-start justify-between text-sm font-medium pt-2 opacity-60">
