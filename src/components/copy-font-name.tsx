@@ -1,4 +1,5 @@
 "use client";
+import { Copy } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 
@@ -28,7 +29,7 @@ const CopyFontNameButton = ({ fontName }: { fontName: string }) => {
         }
       }}
     >
-      <span className="max-w-40 truncate font-mono text-xs">{cssName}</span>
+      <Copy className="size-4" />
     </Button>
   );
 };
