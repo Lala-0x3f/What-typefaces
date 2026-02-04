@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import * as crypto from "crypto";
 import { cn } from "@/lib/utils";
 import FavouriteButton from "./favourite";
 import CopyFontNameButton from "./copy-font-name";
@@ -14,14 +13,20 @@ interface FontCardProp {
   preview_text: string;
 }
 
-const stringToHSL = (inputString: string): string => {
-  // 生成字符串的哈希值
-  const hash = crypto.createHash("md5").update(inputString).digest("hex");
+// 纯前端可用的字符串哈希（FNV-1a 32-bit），避免在 Client Component 中依赖 Node.js 内置模块
+const fnv1a32 = (str: string): number => {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+};
 
-  // 取哈希值的前8个字符，并将其转换为整数
-  const hashInt = parseInt(hash.substring(0, 8), 16);
-  const hashInt2 = parseInt(hash.substring(8, 16), 16);
-  const hashInt3 = parseInt(hash.substring(9, 17), 16);
+const stringToHSL = (inputString: string): string => {
+  const hashInt = fnv1a32(inputString);
+  const hashInt2 = fnv1a32(`${inputString}::2`);
+  const hashInt3 = fnv1a32(`${inputString}::3`);
 
   // 将整数归一化到 ? 到 ? 之间，用于HSL中的Hue
   const hue = (hashInt % 240) + 110;
@@ -40,7 +45,7 @@ const FontCard: React.FC<FontCardProp> = ({
   preview_text,
 }) => {
   // console.log(font)
-  const l = font.styles.length
+  const l = font.styles.length;
   // const display_Name = name.replaceAll(" ", "\n");
   const display_Name = name;
   const card_color = stringToHSL(name);
@@ -148,5 +153,5 @@ const FontCard: React.FC<FontCardProp> = ({
   );
 };
 
-export {stringToHSL}
+export { stringToHSL };
 export default FontCard;

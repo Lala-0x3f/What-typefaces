@@ -44,8 +44,8 @@
 
 ## 开发
 ### 环境要求
-- Node.js 运行环境
-- 包管理器任选其一：pnpm / npm / yarn / bun
+- Node.js 20.x（推荐 20.11.1；Node 23 可能导致 `next build` 报错 `Unexpected end of JSON input`）
+- 包管理器任选其一：pnpm / npm / yarn / bun（推荐 pnpm）
 
 ### 本地启动
 ```bash
@@ -75,6 +75,11 @@ pnpm build
 pnpm start
 pnpm lint
 ```
+
+### Vercel 部署
+- Node.js 版本选择 `20.x`
+- 构建命令与安装命令已在 `vercel.json` 固定（`pnpm install` / `pnpm build`）
+- 如遇 “无法下载依赖”，优先在 Vercel 环境变量里显式设置 `NPM_CONFIG_REGISTRY=https://registry.npmjs.org/`（必要时加 `PNPM_CONFIG_REGISTRY`）
 
 ## 目录结构
 - `src/app`：App Router 路由与页面

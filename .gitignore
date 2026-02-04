@@ -12,6 +12,7 @@
 # next.js
 /.next/
 /out/
+/.next.bak/
 
 # production
 /build
@@ -34,6 +35,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# lock files（按需生成；本仓库不提交）
 pnpm-lock.yaml
+pnpm-lock.*.yaml
+package-lock.json
+yarn.lock
+bun.lockb
 
 /.serena
